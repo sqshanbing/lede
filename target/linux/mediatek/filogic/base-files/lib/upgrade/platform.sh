@@ -16,6 +16,12 @@ platform_do_upgrade() {
 	local board=$(board_name)
 
 	case "$board" in
+	tplink,tl-7dr7299-v1)
+		[ -e /dev/fit0 ] && fitblk /dev/fit0
+		[ -e /dev/fitrw ] && fitblk /dev/fitrw
+		CI_KERNPART="fit"
+		nand_do_upgrade "$1"
+		;;
 	asus,tuf-ax4200|\
 	asus,tuf-ax6000)
 		CI_UBIPART="UBI_DEV"
@@ -48,6 +54,7 @@ platform_do_upgrade() {
 	cmcc,rax3000m-emmc|\
 	cmcc,rax3000me-emmc|\
 	cmcc,xr30-emmc|\
+	clx,s20l|\
 	glinet,gl-mt2500|\
 	glinet,gl-mt6000|\
 	glinet,gl-x3000|\
@@ -75,6 +82,7 @@ platform_check_image() {
 	[ "$#" -gt 1 ] && return 1
 
 	case "$board" in
+	tplink,tl-7dr7299-v1|\
 	bananapi,bpi-r3|\
 	bananapi,bpi-r4|\
 	bananapi,bpi-r4-2g5|\
@@ -111,6 +119,7 @@ platform_copy_config() {
 	cmcc,rax3000m-emmc|\
 	cmcc,rax3000me-emmc|\
 	cmcc,xr30-emmc|\
+	clx,s20l|\
 	glinet,gl-mt2500|\
 	glinet,gl-mt6000|\
 	glinet,gl-x3000|\
